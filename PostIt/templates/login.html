@@ -1,0 +1,20 @@
+{% extends 'base2.html' %}
+
+{% block title %}Login - PostIt{% endblock %}
+
+{% block content %}
+	<h2 align = "center">Login</h2><br>
+	<form action="{% url 'loginrequest' %}" method="post">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="username">Username*</label>
+			<input type="username" class="form-control" placeholder="Enter username" name="username" required="true">
+		</div>
+		<div class="form-group">
+			<label for="pwd">Password*</label>
+			<input type="password" class="form-control" placeholder="Enter password" name="password" required="true">
+		</div>
+		<button type="submit" class="btn btn-primary btn-block">Login</button>
+	</form>
+	<br>New to PostIt ? <a href="{% url 'signup' %}">Sign Up</a> here
+{% endblock %}

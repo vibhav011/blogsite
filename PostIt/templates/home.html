@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+	<br>
+	<p>Hey there! <a href = "{% url 'createblog' %}">Create a new blog</a> now!</p>
+	<br>
+	<h4>All Blogs:</h4>
+	<div class = "card-columns">
+
+		{% for element in blogDetails %}
+			<div class="card bg-light">
+				<div class="card-body" >
+					<h4 class="card-title">{{ element.title }}</h4>
+					<p class="card-text">
+						Author : {{ element.author }}
+						<br>Date : {{ element.date }}
+					</p>
+					<a href="{% url 'blogs' blogid=element.blogid %}" class="card-link" target="_blank">Visit >></a>
+				</div>
+			</div>
+		{% endfor %}
+
+	</div>
+{% endblock %}

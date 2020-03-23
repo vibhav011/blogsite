@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}PostIt{% endblock %}</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+	{% block headinsert %}
+	{% endblock %}
+
+	<style>
+		.container-fluid {
+			margin-right: auto;
+			margin-left: auto;
+			max-width: 400px;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<a class="navbar-brand" href="{% url 'home' %}">PostIt</a>
+	</nav>
+	<br>
+	<div class="container-fluid">
+
+		{% block content %}
+		{% endblock %}
+	</div>
+	<br><br>
+</body>

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+<br>
+{% if blogFound %}
+	<p>{{ body }}</p>
+	<p>Date : {{ date }}</p>
+	<p>- {{ author_fullname }}</p>
+{% else %}
+	<h1>No Blog Found</h1>
+{% endif %}
+{% endblock %}
