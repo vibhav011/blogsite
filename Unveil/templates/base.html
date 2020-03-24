@@ -48,6 +48,7 @@
 							Hi {{ user.firstname }}
 							</a>
 							<div class="dropdown-menu dropdown-menu-right pull-right">
+								<a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
 								<a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
 							</div>
 						</li>

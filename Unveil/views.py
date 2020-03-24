@@ -50,6 +50,23 @@ def logout(request) :
 	SessionList.objects.filter(key = request.session.session_key).delete()
 	return redirect(homepage)
 
+def dashboard(request) :
+	usr = WhoIsLoggedIn(request)
+	if usr is not None :
+
+		blogDetails = []
+
+		for elem in Blog.objects.all() :
+			if elem.username == usr.username :
+				blogDetails.append({"title" : elem.title, "author" : getFullName(elem.username), "date" : elem.date, "blogid" : elem.blogID, "username" : elem.username})
+
+		blogsExist = True
+		if blogDetails == [] : blogsExist = False
+
+		return render(request, 'dashboard.html', {"user" : usr, "blogsExist" : blogsExist, "blogDetails" : blogDetails[::-1]})
+
+	return redirect(homepage)
+
 def signup(request) :
 	if WhoIsLoggedIn(request) is not None :
 		return redirect(homepage)
