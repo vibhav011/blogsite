@@ -4,6 +4,10 @@
 
 {% block content %}
 	<br>
+	{% if blogsExist %}
+	<p><a href = "{% url 'createblog' %}">Create a new blog</a></p>
+	<br>
+	{% endif %}
 	<h4>My Blogs</h4>
 	<div class = "card-rows">
 
