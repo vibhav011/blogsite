@@ -3,7 +3,6 @@
 {% block title %}Blog{% endblock %}
 
 {% block headinject %}
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 {% if blogFound %}
 	<script>
 		$(document).ready(function() {
@@ -23,7 +22,7 @@
 	<br>
 	<div class="row">
 		<div class="col-sm-3"></div>
-		<div class="col-sm-3 text-muted text-center mb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ author_fullname }}</div>
+		<div class="col-sm-3 text-muted text-center mb-2"><i class="fa fa-user" aria-hidden="true"></i> {{ author_fullname }} {% if author_username == 'vibhav011' %}<i class="fa fa-check-circle" style="color:#329AFC" aria-hidden="true"></i>{% endif %}</div>
 		<div class="col-sm-3 text-muted text-center mb-2"><i class="fa fa-calendar" aria-hidden="true"></i> {{ date }}</div>
 		<div class="col-sm-3"></div>
 	</div>

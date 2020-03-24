@@ -14,10 +14,10 @@
 				<div class="card-body" >
 					<h4 class="card-title">{{ element.title }}</h4>
 					<p class="card-text">
-						Author : {{ element.author }}
+						Author : {{ element.author }} {% if element.username == 'vibhav011' %}<i class="fa fa-check-circle" style="color:#329AFC" aria-hidden="true"></i>{% endif %}
 						<br>Date : {{ element.date }}
 					</p>
-					<a href="{% url 'blogs' blogid=element.blogid %}" class="card-link" target="_blank">Visit >></a>
+					<a href="{% url 'blogs' blogid=element.blogid %}" class="card-link">Visit >></a>
 					{% if element.username == user.username %}
 					<a href="{% url 'editblog' blogid=element.blogid %}" class="card-link">Edit</a>
 					{% endif %}
