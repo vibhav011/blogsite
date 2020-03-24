@@ -4,10 +4,10 @@
 
 {% block content %}
 	<br>
-	<p>Hey there! <a href = "{% url 'createblog' %}">Create a new blog</a> now!</p>
+	<p>Hey there! Want to share something? <a href = "{% url 'createblog' %}">Create a new blog</a> now!</p>
 	<br>
 	<h4>All Blogs:</h4>
-	<div class = "card-columns">
+	<div class = "card-rows">
 
 		{% for element in blogDetails %}
 			<div class="card bg-light">
@@ -18,6 +18,9 @@
 						<br>Date : {{ element.date }}
 					</p>
 					<a href="{% url 'blogs' blogid=element.blogid %}" class="card-link" target="_blank">Visit >></a>
+					{% if element.username == user.username %}
+					<a href="{% url 'editblog' blogid=element.blogid %}" class="card-link">Edit</a>
+					{% endif %}
 				</div>
 			</div>
 		{% endfor %}

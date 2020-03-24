@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.http import JsonResponse
 from .models import User, Blog, SessionList
 
 def WhoIsLoggedIn(request) :
@@ -31,9 +33,9 @@ def homepage(request) :
 	blogDetails = []
 
 	for elem in Blog.objects.all() :
-		blogDetails.append({"title" : elem.title, "author" : getFullName(elem.username), "date" : elem.date, "blogid" : elem.blogID})
+		blogDetails.append({"title" : elem.title, "author" : getFullName(elem.username), "date" : elem.date, "blogid" : elem.blogID, "username" : elem.username})
 
-	return render(request, 'home.html', {'user' : WhoIsLoggedIn(request), "blogDetails" : blogDetails})
+	return render(request, 'home.html', {'user' : WhoIsLoggedIn(request), "blogDetails" : blogDetails[::-1]})
 
 def login(request) :
 	if WhoIsLoggedIn(request) is not None :
@@ -96,8 +98,9 @@ def showBlog(request, blogid) :
 	params = {'user' : WhoIsLoggedIn(request)}
 
 	if b.exists() :
+		print(b)
 		b = b[0]
-		params.update({'blogFound' : True, 'title' : b.title, 'body' : b.body, 'date' : b.date, 'author_username' : b.username, 'author_fullname' : getFullName(b.username)})
+		params.update({'blogFound' : True, 'title' : b.title, 'body' : b.body, 'date' : b.date, 'author_username' : b.username, 'author_fullname' : getFullName(b.username), 'blogid' : b.blogID})
 		return render(request, 'showblog.html', params)
 
 	params.update({'blogFound' : False})
@@ -111,10 +114,49 @@ def createBlog(request) :
 
 	return redirect(login);
 
+def createBlogRequest(request) :
+	tt = request.POST.get('title', '')
+	bd = request.POST.get('body', '')
+	us = request.POST.get('username', '')
+	dt = request.POST.get('date', '')
+	bid = 1
+	if Blog.objects.all().exists() :
+		bid = Blog.objects.last().blogID + 1
 
+	Blog.objects.create(blogID = bid, username = us, title = tt, body = bd, date = dt)
 
+	data = {'url' : reverse('blogs', kwargs={'blogid':bid})}
+	return JsonResponse(data)
 
+def editBlog(request, blogid) :
+	usr = WhoIsLoggedIn(request)
+	if usr is not None :
+		b = Blog.objects.filter(blogID = blogid)
+		if b.exists() :
+			if usr.username == b[0].username :
+				return render(request, 'editBlog.html', {'user': usr, 'blogDetails' : b[0]})
 
+	return redirect(login);
 
+def editBlogRequest(request) :
+	tt = request.POST.get('title', '')
+	bd = request.POST.get('body', '')
+	bid = request.POST.get('blogid', None)
 
+	if bid is not None :
+		blog = Blog.objects.get(blogID = bid)
+		blog.title = tt
+		blog.body = bd
+		blog.save()
 
+	data = {'url' : reverse('blogs', kwargs={'blogid':bid})}
+	return JsonResponse(data)
+
+def deleteBlogRequest(request) :
+	bid = request.POST.get('blogid', None)
+
+	if bid is not None :
+		Blog.objects.filter(blogID = bid).delete()
+
+	data = {'url' : reverse('home')}
+	return JsonResponse(data)

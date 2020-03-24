@@ -2,13 +2,30 @@
 
 {% block title %}Blog{% endblock %}
 
+{% block headinject %}
+{% if blogFound %}
+	<script>
+		$(document).ready(function() {
+			var txt = document.createElement("textarea");
+			txt.innerHTML = "{{ body }}";
+
+			$("#body").html(txt.value);
+		});
+	</script>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <br>
 {% if blogFound %}
-	<p>{{ body }}</p>
+	<p id = "body"></p>
 	<p>Date : {{ date }}</p>
 	<p>- {{ author_fullname }}</p>
+	{% if user.username == author_username %}
+		<a href = "{% url 'editblog' blogid=blogid %}">Edit</a>
+	{% endif %}
 {% else %}
 	<h1>No Blog Found</h1>
 {% endif %}
+<br><br>
 {% endblock %}

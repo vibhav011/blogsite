@@ -1,41 +1,54 @@
 {% extends 'base.html' %}
 
-{% block title %}Create Blog{% endblock %}
+{% block title %}Edit Blog{% endblock %}
 
 {% block headinject %}
 	<script src="https://cdn.jsdelivr.net/gh/vibhav011/blogsite/editor.js"></script>
 	<script>
 		$(document).ready(function() {
 			$("#txtEditor").Editor();
+			$("#title").val("{{ blogDetails.title }}");
+			var txt = document.createElement("textarea");
+			txt.innerHTML = "{{ blogDetails.body }}";
+			$("#txtEditor").Editor("setText", txt.value);
 		});
-		
-		function CreateBlog() {
+
+		function EditBlog() {
 			var title = $("#title").val();
-			if (title == "") return;
 			var body = $("#txtEditor").Editor("getText");
-			var d = new Date();
-			var month = d.getMonth()+1;
-			var day = d.getDate();
-
-			var date = (day<10 ? '0' : '') + day + '/' + (month<10 ? '0' : '') + month + '/' + d.getFullYear();
-
-			$("#btn").attr("disabled", true);
-
+			
 			$.ajax({
 				type : "POST",
-				url: '{% url "createblogrequest" %}',
+				url: '{% url "editblogrequest" %}',
 				data: {
 					'title': title,
 					'body' : body,
-					'username' : '{{ user.username }}',
-					'date' : date,
-					'csrfmiddlewaretoken': '{{ csrf_token }}', 
+					'blogid' : '{{ blogDetails.blogID }}',
+					'csrfmiddlewaretoken': '{{ csrf_token }}',
 				},
 				dataType: 'json',
 				success: function (data) {
 					window.location.href = data.url;
 				}
 			});
+		}
+		function DeleteBlog() {
+			var con = confirm("Do you really want to delete this blog? You can't undo this action.");
+
+			if (con) {
+				$.ajax({
+					type : "POST",
+					url: '{% url "deleteblogrequest" %}',
+					data: {
+						'blogid' : '{{ blogDetails.blogID }}',
+						'csrfmiddlewaretoken': '{{ csrf_token }}',
+					},
+					dataType: 'json',
+					success: function (data) {
+						window.location.href = data.url;
+					}
+				});
+			}
 		}
 	</script>
 
@@ -47,7 +60,7 @@
 
 {% block content %}
 	<br>
-	<h1>Create a new blog</h1>
+	<h1>Edit your blog</h1>
 	<br>
 	
 	<label for="title" class="mr-sm-2">Blog Name* : </label>
@@ -61,5 +74,6 @@
 		</div>
 	</div>
 	<br>
-	<button class = "btn btn-primary" id="btn" onclick = "CreateBlog()">Create</button><br><br>
+	<button class = "btn btn-primary" onclick = "EditBlog()">Save Changes</button> 
+	<button class = "btn btn-danger" onclick = "DeleteBlog()">Delete Blog</button><br><br>
 {% endblock %}
