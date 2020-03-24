@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+	<br>
+	<h4>My Blogs</h4>
+	<div class = "card-rows">
+
+		{% if blogsExist %}
+			{% for element in blogDetails %}
+				<div class="card bg-light">
+					<div class="card-body" >
+						<h4 class="card-title">{{ element.title }}</h4>
+						<p class="card-text">
+							Author : {{ element.author }} {% if element.username == 'vibhav011' %}<i class="fa fa-check-circle" style="color:#329AFC" aria-hidden="true"></i>{% endif %}
+							<br>Date : {{ element.date }}
+						</p>
+						<a href="{% url 'blogs' blogid=element.blogid %}" class="card-link">Visit >></a>
+						{% if element.username == user.username %}
+						<a href="{% url 'editblog' blogid=element.blogid %}" class="card-link">Edit</a>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		{% else %}
+			You don't have any blogs currently. <a href = "{% url 'createblog' %}">Create one now!</a>
+		{% endif %}
+
+	</div>
+{% endblock %}
