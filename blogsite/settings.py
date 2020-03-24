@@ -25,7 +25,7 @@ SECRET_KEY = '*@&@q5*ix2x60yd(r)&$ls($+)jty#8v*cznxa2g%j553lwd9x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['unveil.pythonanywhere.com']
 
 
 # Application definition
